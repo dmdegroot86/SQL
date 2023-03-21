@@ -1,0 +1,26 @@
+--Create a sodashop database
+CREATE TABLE sodashop (id INTEGER PRIMARY KEY, name TEXT, color TEXT, price INTEGER, caffeine TEXT);
+INSERT INTO sodashop
+VALUES
+(1,"coke","brown",2,"y"),
+(2,"dietcoke","brown",2,"y"),
+(3,"sprite","clear",3,"n"),
+(4,"dietsprite","clear",3,"n"),
+(5,"drpepper","brown",3,"y"),
+(6,"dietdrpepper","brown",3,"y"),
+(7,"rootbeer","brown",2,"y"),
+(8,"dietrootbeer","brown",2,"y"),
+(9,"gingerale","clear",2,"n"),
+(10,"dietgingerale","clear",2,"n"),
+(11,"sunkist","orange",3,"n"),
+(12,"dietsunkist","orange",3,"n"),
+(13,"icedtea","brown",3,"y"),
+(14,"sweettea","brown",3,"y"),
+(15,"gatorade","red",4,"n")
+;
+
+--display inventory of sodashop products ordered by price
+SELECT * FROM sodashop ORDER BY price;
+
+--display iventory of sodashop products that include caffeine
+SELECT * FROM sodashop WHERE caffeine = 'y' ORDER BY PRICE
