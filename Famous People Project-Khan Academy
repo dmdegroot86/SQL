@@ -1,0 +1,67 @@
+--This project required the creation of multiple tables about famous people and insights about their lives.--
+--It required that a primary key could access information from another table.--
+
+--Table creations--
+/* Create table about the people and what they do here */
+CREATE table athletes
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT, sport TEXT, age INTEGER);
+
+INSERT INTO athletes (name, sport, age) VALUES ("Michael Jordan", "Basketball", "61");
+INSERT INTO athletes (name, sport, age) VALUES ("Tiger Woods", "Golf", "48");
+INSERT INTO athletes (name, sport, age) VALUES ("Derek Jeter", "Baseball", "49");
+INSERT INTO athletes (name, sport, age) VALUES ("Peyton Manning", "Football", "47");
+INSERT INTO athletes (name, sport, age) VALUES ("LaMelo Ball", "Basketball", "22");
+INSERT INTO athletes (name, sport, age) VALUES ("Tom Kim", "Golf", "21");
+INSERT INTO athletes (name, sport, age) VALUES ("Bryce Young", "Football", "21");
+INSERT INTO athletes (name, sport, age) VALUES ("Juan Soto", "Baseball", "25");
+
+CREATE table info
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+college TEXT, biggest_sponsor TEXT, retired TEXT);
+
+INSERT INTO info (college, biggest_sponsor, retired) VALUES ("North Carolina", "Nike", "Y");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES ("Stanford", "Nike", "N");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES ("Michigan", "Nike", "Y");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES ("Tennessee", "Nationwide", "Y");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES (NULL, "Puma", "N");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES (NULL, "CJ Corp", "N");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES ("Alabama", "Nike", "N");
+INSERT INTO info (college, biggest_sponsor, retired) VALUES (NULL, "Under Armour", "N");
+
+CREATE table more
+(id INTEGER PRIMARY KEY AUTOINCREMENT,
+state_of_birth TEXT, married TEXT, number_of_children INTEGER);
+
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("New York", "Y", 5);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("California", "N", 2);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("New Jersey", "Y", 4);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("Louisiana", "Y", 2);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("California", "N", 0);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES (NULL, "N", 0);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES ("Pennsylvania", "N", 0);
+INSERT INTO more (state_of_birth, married, number_of_children) VALUES (NULL, "N", 0);
+
+--We needed to write a query that would pull all of the information from all tables to be viewable in a single table.--
+SELECT *
+FROM athletes a
+JOIN info i
+ON a.id = i.id
+JOIN more m
+ON a.id = m.id;
+
+--This was to demonstrate accessing just the information from 2 tables where the information what easy to understand.--
+SELECT a.name, a.sport, i.biggest_sponsor, m.number_of_children
+FROM athletes a
+JOIN info i
+ON a.id = i.id
+JOIN more m
+ON a.id = m.id;
+
+--This query was to show a GROUP BY clause with an aggregate function.--
+SELECT a.sport, SUM (m.number_of_children) as kids
+FROM athletes a
+JOIN more m
+ON a.id = m.id
+GROUP BY a.sport
+ORDER BY kids DESC;
