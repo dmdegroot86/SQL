@@ -1,0 +1,80 @@
+--Here is a project regarding information about music store. It contains information on the music--
+--they carry, their customers, and their employees. We came up with questions about the data that--
+--we thought may be pertinent to a business or to the wants of customers. The information included--
+--11 different tables with 1 or 2 common keys between them. Here is what I came up with.-- 
+
+--What are the amount songs in each genre of music offered by the store?--
+
+SELECT COUNT (a.GenreId) AS "Total Count", b.Name
+FROM chinook.tracks a
+JOIN chinook.genres b
+ON a.GenreId = b.GenreId
+GROUP BY b.Name
+ORDER BY "Total Count" DESC;
+
+--What is the most common city of all employees?--
+
+SELECT COUNT(*) AS "Employees Within", City
+FROM chinook.employees
+GROUP BY City
+ORDER BY "Employees Within" DESC
+LIMIT 1;
+
+--List all of the cities that are distinct from the customer list.--
+
+SELECT DISTINCT City, State, Country
+FROM chinook.customers
+ORDER BY Country ASC, State ASC, City ASC;
+
+--Which employees are also customers?--
+
+SELECT a.FirstName, a.LastName
+FROM chinook.customers a
+JOIN chinook.employees b
+ON a.FirstName = b.FirstName 
+AND a.LastName = b.LastName
+AND a.Address = b.Address;
+
+--Which customers do not have an email listed?--
+
+SELECT FirstName, LastName, Email 
+FROM chinook.customers
+WHERE Email IS NULL;
+
+--Which customers live outside of Canada?--
+
+SELECT FirstName, LastName, Country
+FROM chinook.customers
+WHERE Country <> "Canada"
+ORDER BY Country ASC;
+
+--What if I wanted to see which customers made purchases recently, how many items they purchased, and how--
+--each person spent?--
+
+SELECT a.FirstName, a.LastName, ROUND (SUM (c.UnitPrice), 2) AS TotalSpent,  SUM (c.Quantity) AS Quantity
+FROM chinook.customers a
+JOIN chinook.invoices b
+ON a.CustomerId = b.CustomerId
+JOIN chinook.invoice_items c
+ON b.InvoiceId = c.InvoiceId
+GROUP BY c.InvoiceId
+ORDER BY TotalSpent DESC;
+
+--What if I wanted to see the tracks table with Album Name, Media Type, and Genre instead of number references--
+--while pulling the information from multiple other tables?--
+
+SELECT a.Name AS "Title", 
+b.Name AS "Artist", 
+c.Title AS "Album", 
+d.Name AS "Media", 
+e.Name AS "Genre",
+a.UnitPrice AS "Price ($)"
+FROM chinook.tracks a
+JOIN chinook.artists b
+JOIN chinook.albums c
+JOIN chinook.media_types d
+JOIN chinook.genres e
+ON a.AlbumId = c.AlbumId 
+AND b.ArtistId = c.ArtistId 
+AND a.MediaTypeId = d.MediaTypeId 
+AND a.GenreId = e.GenreId;
